@@ -1,0 +1,236 @@
+/* =========================================
+   1. THE SETUP & GLOBALS
+   ========================================= */
+html {
+    background-color: #0b0b0b; /* ล็อกสีพื้นหลังสุดให้เป็นสีดำกลมกลืนกับตัวเว็บ */
+}
+/* ใส่ไว้ส่วนบนๆ ของไฟล์ CSS */
+body {
+    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
+    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+   * { 
+    box-sizing: border-box; 
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0b0b0b;
+    color: #eee;
+    overflow: hidden; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    -webkit-user-select: none; /* สำหรับ Safari */
+    user-select: none;         /* สำหรับ Chrome, Firefox และเบราว์เซอร์ทั่วไป */
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.15;
+    z-index: -2;
+}
+
+/* =========================================
+   2. HEADER & LOGO
+   ========================================= */
+header {
+    background-color: transparent;
+    padding: 30px 0;
+    border-bottom: 1px solid #1a1a1a;
+    width: 100%;
+    flex-shrink: 0; 
+}
+
+header .container { 
+    justify-content: flex-start; 
+    align-items: center; 
+    display: flex;
+    padding: 0 40px;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.logo .platform { 
+    color: #888; 
+    font-weight: 400; 
+}
+
+/* =========================================
+   3. REFERENCE BUTTON ('i')
+   ========================================= */
+button { font-family: 'Inter', sans-serif; }
+
+.btn-ref-circle {
+    width: 45px;
+    height: 45px;
+    background-color: #ffffff;
+    color: #0b0b0b;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 100;
+    font-family: serif;
+    font-weight: bold;
+    font-size: 22px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-ref-circle:hover { 
+    background-color: #f4f4f5;
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   4. HERO SECTION & TYPOGRAPHY
+   ========================================= */
+.hero {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+}
+
+.hero .container { 
+    flex-direction: column; 
+    align-items: center; 
+    display: flex;
+    animation: fadeUp 1s ease-out forwards;
+    width: 100%;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.beta-notice {
+    font-size: 12px;
+    color: #888;
+    background-color: #1a1a1a;
+    padding: 8px 15px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+    border: 1px solid #333;
+}
+
+h1 {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 30px 0;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #ffffff 30%, #71717a 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #aaa;
+    max-width: 600px;
+    margin: 0 0 50px 0;
+    line-height: 1.6;
+}
+
+/* =========================================
+   5. MODE CARDS (ดีไซน์การ์ดแบบใหม่)
+   ========================================= */
+.mode-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.mode-card {
+    background-color: rgba(26, 26, 26, 0.4);
+    border: 1px solid #333;
+    border-radius: 24px;
+    padding: 40px 30px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: #eee;
+    backdrop-filter: blur(10px);
+}
+
+.mode-card .card-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.mode-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.mode-card .card-desc {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* 🌟 เอฟเฟกต์ตอนเอาเมาส์ชี้ (Hover) */
+.mode-card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #fff; /* ขอบสว่างขึ้นเป็นสีขาว */
+    transform: translateY(-8px); /* การ์ดลอยขึ้น */
+    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.05);
+}
+
+.mode-card:hover .card-icon {
+    transform: scale(1.15) rotate(5deg); /* ไอคอนขยับนิดๆ ให้ดูมีชีวิต */
+}
+
+/* =========================================
+   6. RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 768px) {
+    header .container { padding: 0 20px; justify-content: center; }
+    h1 { font-size: 48px; }
+    .mode-cards {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .mode-card { width: 100%; max-width: 320px; padding: 30px 20px; }
+}

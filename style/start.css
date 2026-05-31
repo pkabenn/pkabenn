@@ -1,0 +1,144 @@
+/* =========================================
+   1. THE SETUP & GLOBALS
+   ========================================= */
+
+   html {
+    background-color: #0b0b0b; /* ล็อกสีพื้นหลังสุดให้เป็นสีดำกลมกลืนกับตัวเว็บ */
+}
+/* ใส่ไว้ส่วนบนๆ ของไฟล์ CSS */
+body {
+    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
+    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+* { 
+    box-sizing: border-box; 
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0b0b0b;
+    color: #eee;
+    overflow: hidden; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    -webkit-user-select: none; /* สำหรับ Safari */
+    user-select: none;         /* สำหรับ Chrome, Firefox และเบราว์เซอร์ทั่วไป */
+}
+
+/* ลายตารางพื้นหลังแบบจางๆ */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.15;
+    z-index: -2;
+}
+
+/* =========================================
+   2. HERO SECTION & ANIMATION
+   ========================================= */
+.hero {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0;
+}
+
+/* 🛑 ลบ .hero::before (แสงสีฟ้า) ออกเพื่อให้เป็นโทนขาวดำมินิมอลเข้าคู่กับหน้า main */
+
+/* 🌟 อนิเมชันค่อยๆ ลอยขึ้นมาตอนเปิดเว็บ */
+.container { 
+    flex-direction: column; 
+    align-items: center; 
+    display: flex;
+    animation: fadeUp 1s ease-out forwards;
+    width: 100%;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   3. TYPOGRAPHY (ตกแต่งข้อความ)
+   ========================================= */
+.beta-notice {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888; /* ปรับเป็นสีเทาเพื่อความมินิมอลตามธีมหลัก */
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 8px 18px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 50px 0;
+    letter-spacing: -2px;
+    /* 🌟 ไล่สีตัวหนังสือแบบพรีเมียมจากขาวไปเทาเงิน */
+    background: linear-gradient(135deg, #ffffff 30%, #71717a 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* =========================================
+   4. BUTTON
+   ========================================= */
+.cta-buttons { 
+    display: flex; 
+    justify-content: center; /* 🔴 จัดให้อยู่กึ่งกลางแนวนอนอย่างสมบูรณ์ */
+    align-items: center; 
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: #ffffff;
+    color: #0b0b0b;
+    padding: 18px 50px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.btn-primary:hover { 
+    background-color: #f4f4f5;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.25);
+}
+
+/* =========================================
+   5. RESPONSIVE DESIGN (สำหรับมือถือ)
+   ========================================= */
+@media (max-width: 768px) {
+    h1 { font-size: 48px; }
+    .btn-primary { padding: 15px 40px; font-size: 14px; }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trig - Pathway Map</title>
+    <link rel="stylesheet" href="style/learn.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+    <main class="hero">
+        <div class="container map-wrapper">
+            
+            <div class="top-row">
+                <div class="title-text">
+                    <h1>The Journey</h1>
+                    <p>เดินทางและปลดล็อกความลับของวงกลมหนึ่งหน่วย</p>
+                </div>
+
+                <button class="btn-back" onclick="goBack()">← BACK TO MENU</button>
+            </div>
+
+            <div class="split-container">
+                
+                <div class="map-section">
+                    <div class="scroll-controls">
+                        <button class="btn-scroll" onclick="navigateLesson(-1)" title="ด่านก่อนหน้า">←</button>
+                        <button class="btn-scroll" onclick="navigateLesson(1)" title="ด่านถัดไป">→</button>
+                    </div>
+
+                    <div class="map-scroll-window" id="mapScrollWindow">
+                        <div class="map-area">
+                            <svg class="map-path" viewBox="0 0 2000 500" preserveAspectRatio="none">
+                                <path d="M 100 400 C 300 400, 300 250, 500 250 C 600 250, 600 400, 700 400 C 800 400, 800 150, 900 150 C 1100 150, 1100 350, 1300 350 C 1500 350, 1500 200, 1700 200 C 1800 200, 1850 300, 1900 300" 
+                                      fill="none" stroke="#444" stroke-width="4" />
+                            </svg>
+
+                            <button class="map-node unlocked" style="left: 5%; top: 80%;" data-title="บทที่ 1" onclick="selectLesson(1)">1</button>
+                            <button class="map-node active" style="left: 25%; top: 50%;" data-title="บทที่ 2" onclick="selectLesson(2)">2</button>
+                            <button class="map-node locked" style="left: 35%; top: 80%;" data-title="บทที่ 3" onclick="selectLesson(3)">3</button>
+                            <button class="map-node locked" style="left: 45%; top: 30%;" data-title="บทที่ 4" onclick="selectLesson(4)">4</button>
+                            <button class="map-node locked" style="left: 65%; top: 70%;" data-title="บทที่ 5" onclick="selectLesson(5)">5</button>
+                            <button class="map-node locked" style="left: 85%; top: 40%;" data-title="บทที่ 6" onclick="selectLesson(6)">6</button>
+                            <button class="map-node treasure locked" style="left: 95%; top: 60%;" data-title="บททดสอบสุดท้าย" onclick="selectLesson(7)">X</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-badge">STAGE DETAILS</div>
+                    <h2 id="infoTitle">เลือกบทเรียน</h2>
+                    <p id="infoDesc">คลิกเลือกตัวเลขด่านบนแผนที่ทางฝั่งซ้าย เพื่อดูรายละเอียดเนื้อหาและเงื่อนไขการเข้าเรียน</p>
+                    
+                    <div class="info-status-box">
+                        <span class="status-label">สถานะด่าน:</span>
+                        <span id="infoStatus" class="status-value">-</span>
+                    </div>
+
+                    <button class="btn-start-disabled" id="btnStartLesson" onclick="startCurrentLesson()">
+                        START LESSON
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

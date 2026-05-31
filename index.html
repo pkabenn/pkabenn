@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trig - The Journey</title>
+    <style>
+        /* ล็อกพื้นหลังและลบขอบทั้งหมดทิ้ง */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b0b0b;
+            overflow: hidden;
+        }
+
+        /* ตั้งค่ากรอบ iframe ให้เต็มจอซ้อนทับกัน และมีเอฟเฟกต์เฟดตอนเปลี่ยนหน้า */
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            transition: opacity 0.3s ease-out; /* ความนุ่มนวลตอนสลับหน้า */
+        }
+
+        /* คลาสสำหรับซ่อนหน้า */
+        .page-hidden {
+            opacity: 0;
+            pointer-events: none; /* กดปุ่มไม่ได้ตอนซ่อนอยู่ */
+            z-index: 1;
+        }
+
+        /* คลาสสำหรับโชว์หน้าปัจจุบัน */
+        .page-active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="frame-start" class="page-active" src="start.html"></iframe>
+    <iframe id="frame-menu" class="page-hidden" src="menu.html"></iframe>
+    <iframe id="frame-learn" class="page-hidden" src="learn.html"></iframe>
+
+    <script>
+        // ฟังก์ชันสั่งสลับหน้าเว็บ (จะถูกเรียกใช้จากหน้าย่อยข้างใน)
+        function switchPage(pageName) {
+            // 1. ซ่อนทุกหน้าก่อน
+            document.getElementById('frame-start').className = 'page-hidden';
+            document.getElementById('frame-menu').className = 'page-hidden';
+            document.getElementById('frame-learn').className = 'page-hidden';
+            
+            // 2. โชว์หน้าที่ต้องการ
+            document.getElementById('frame-' + pageName).className = 'page-active';
+        }
+    </script>
+</body>
+</html>

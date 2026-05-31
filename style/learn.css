@@ -1,0 +1,369 @@
+/* =========================================
+   1. THE SETUP & GLOBALS
+   ========================================= */
+   html {
+    background-color: #0b0b0b; /* ล็อกสีพื้นหลังสุดให้เป็นสีดำกลมกลืนกับตัวเว็บ */
+}
+/* ใส่ไว้ส่วนบนๆ ของไฟล์ CSS */
+body {
+    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
+    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0b0b0b;
+    color: #eee;
+    overflow: hidden; 
+    width: 100vw;       /* 🔴 ล็อกความกว้างตัวบอร์ดี้เท่าหน้าจอจริง */
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(#1a1a1a 1px, transparent 1px), linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.15; z-index: -2;
+    z-index: -2;
+}
+
+/* =========================================
+   2. TOP ROW: จัดเนื้อหาแยกฝั่งซ้าย - ขวา
+   ========================================= */
+.top-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;           
+    width: 100%;                   
+    margin-top: 0; 
+    margin-bottom: 20px;     
+    padding-right: 10px; /* 🟢 ดึงปุ่ม BACK TO MENU ให้ห่างขอบขวาเพิ่มขึ้นอีกหน่อย */
+    text-align: left;              
+    flex-shrink: 0;                
+}
+
+.title-text h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 0 0 4px 0;       
+    color: #fff;
+}
+
+.title-text p {
+    color: #888;
+    margin: 0;
+    font-size: 14px;
+}
+
+.btn-back {
+    background: #111;
+    color: #aaa;
+    border: 1px solid #222;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap; 
+}
+
+.btn-back:hover {
+    background: #ffffff;
+    color: #0b0b0b;
+    border-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* =========================================
+   3. MAP CONTAINER, SPLIT LAYOUT & SCROLL
+   ========================================= */
+.hero {
+    width: 100vw;                  
+    height: 100vh;                 
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: stretch;          
+    
+    /* 🟢 ปรับตรงนี้: เพิ่ม padding ฝั่งขวา (ตัวเลขที่สอง) จาก 40px เป็น 60px หรือ 70px */
+    /* เรียงลำดับเป็น: บน(30px) ขวา(65px) ล่าง(24px) ซ้าย(45px) */
+    padding: 30px 65px 24px 45px;  
+    
+    overflow: hidden; 
+}
+
+.map-wrapper {
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: stretch;          /* 🔴 เปลี่ยนเป็น stretch เพื่อคุมระเบียบแถว */
+    animation: fadeUp 0.8s ease-out forwards;
+    min-height: 0; 
+    min-width: 0;                  /* 🔴 ป้องกันการขยายตัวเกินขอบเขต Flex */
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* กล่องแบ่งโครงสร้างหน้าจอ ซ้าย/ขวา */
+.split-container {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    flex-grow: 1;
+    min-height: 0;                 /* ล็อกความสูงไม่ให้เกินขอบล่างหน้าจอ */
+    min-width: 0;                  /* 🔴 ป้องกันแผนที่ด้านในดันความกว้างกล่องแตก */
+    margin-bottom: 10px;
+}
+
+/* โซนแผนที่ (ฝั่งซ้าย) */
+.map-section {
+    flex: 1.8; 
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;                 /* 🔴 ล็อกความสูงฝั่งซ้าย */
+}
+
+/* ปุ่มลูกศรควบคุมการเลื่อน */
+.scroll-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-end; 
+    flex-shrink: 0;                /* ห้ามปุ่มลูกศรโดนบีบแบน */
+}
+
+.btn-scroll {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-scroll:hover {
+    background-color: #ffffff;
+    color: #0b0b0b;
+    border-color: #ffffff;
+}
+
+/* กรอบเลื่อนหน้าต่างแผนที่ */
+.map-scroll-window {
+    width: 100%;
+    flex-grow: 1;
+    overflow-x: auto;  
+    overflow-y: hidden;
+    border-radius: 20px;
+    background-color: rgba(15, 15, 15, 0.5);
+    border: 1px solid #1a1a1a;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8); 
+    min-height: 0;                 /* 🔴 เปิดทางให้ระบบ Scroll ทำงานได้อย่างถูกต้อง */
+}
+
+/* ตกแต่งแถบเลื่อนเฉพาะฝั่งแผนที่ */
+.map-scroll-window::-webkit-scrollbar { height: 6px; }
+.map-scroll-window::-webkit-scrollbar-track { background: #0f0f0f; border-radius: 10px; }
+.map-scroll-window::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+.map-scroll-window::-webkit-scrollbar-thumb:hover { background: #444; }
+
+.map-area {
+    position: relative;
+    width: 2000px; 
+    height: 100%; 
+}
+
+.map-path {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+}
+
+/* =========================================
+   4. INFO PANEL (กล่องข้อมูลฝั่งขวา)
+   ========================================= */
+.info-section {
+    flex: 1; 
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid #222;
+    border-radius: 24px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    min-height: 0;
+    min-width: 0;                  /* 🔴 ป้องกันกล่องข้อมูลโดนบีบหาย */
+}
+
+.info-badge {
+    font-size: 11px;
+    color: #888;
+    background: #1a1a1a;
+    padding: 5px 12px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.info-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.info-section p {
+    font-size: 15px;
+    color: #aaa;
+    line-height: 1.6;
+    margin: 0 0 25px 0;
+    flex-grow: 1; 
+    overflow-y: auto; 
+}
+
+.info-status-box {
+    width: 100%;
+    background: #111;
+    border: 1px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.status-label { font-size: 14px; color: #666; }
+.status-value { font-size: 14px; font-weight: 600; }
+
+/* ดีไซน์ปุ่มกดเริ่มบทเรียนด้านล่างสุด */
+.btn-start-disabled {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: none;
+    background-color: #222;
+    color: #555;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+}
+
+.btn-start-active {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border: none;
+    background-color: #ffffff;
+    color: #0b0b0b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.btn-start-active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================
+   5. MAP NODES (จุดบนแผนที่ยังใช้โค้ดเดิม)
+   ========================================= */
+.map-node {
+    position: absolute;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 20px; font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.map-node.unlocked { background-color: #0b0b0b; color: #fff; border: 2px solid #fff; }
+.map-node.unlocked:hover { background-color: #1a1a1a; transform: translate(-50%, -50%) scale(1.1); }
+.map-node.active { background-color: #fff; color: #0b0b0b; border: none; box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); animation: pulse 2s infinite; }
+.map-node.active:hover { transform: translate(-50%, -50%) scale(1.15); }
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.map-node.locked { background-color: #0b0b0b; color: #444; border: 2px dashed #444; cursor: not-allowed; }
+.map-node.treasure { font-family: serif; font-size: 28px; background-color: transparent; border: none; color: #444; }
+
+.map-node::after { display: none; }
+
+
+/* =========================================
+   🌟 MARKER อัปเกรด: มาร์กด่านปัจจุบันให้เห็นชัดเจนแบบถาวร
+   ========================================= */
+.map-node.active {
+    background-color: #4ade80 !important; /* เปลี่ยนเป็นสีเขียวสว่างเด่นๆ */
+    color: #0b0b0b !important; /* ตัวหนังสือสีดำให้ตัดกัน */
+    border: 4px solid #ffffff !important; /* ขอบหนาสีขาว */
+    box-shadow: 0 0 30px rgba(74, 222, 128, 0.9) !important; /* แสงเรืองรองรอบๆ */
+    transform: translate(-50%, -50%) scale(1.2) !important; /* ขยายขนาดวงกลมค้างไว้ */
+    z-index: 10 !important; /* ดันให้อยู่เลเยอร์หน้าสุดเสมอ */
+}
+
+/* 📍 เพิ่มหมุดลอยเด้งๆ ชี้เป้าด่านที่เลือกไว้ */
+.map-node.active::before {
+    position: absolute;
+    top: -45px;
+    font-size: 28px;
+    animation: floatPin 1.5s ease-in-out infinite; /* สั่งให้เด้งขึ้นลงสมูทๆ */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+/* แอนิเมชันสำหรับหมุดเด้ง */
+@keyframes floatPin {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
