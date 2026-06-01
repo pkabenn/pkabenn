@@ -424,10 +424,14 @@ body::before {
     }
 
     /* จัดตำแหน่งปุ่มดูข้อมูลด่านสีเขียวให้อยู่เหนือขอบล่างพอดี */
+    /* 📍 1. ดันปุ่มดูข้อมูลด่านให้ลอยสูงขึ้นจากขอบล่าง */
     .btn-select-node {
         display: block;
         position: fixed;
-        bottom: 30px;
+        
+        /* เปลี่ยนจาก bottom: 30px เป็นคำสั่งนี้ */
+        bottom: calc(50px + env(safe-area-inset-bottom)); 
+        
         left: 50%;
         transform: translateX(-50%);
         z-index: 90;
@@ -440,6 +444,30 @@ body::before {
         border-radius: 50px;
         box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
     }
+
+    /* 📍 2. เพิ่มพื้นที่ด้านล่างให้ Pop-up ดูโปร่งขึ้น */
+    .info-section {
+        position: fixed;
+        bottom: -100%; 
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 75dvh; 
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch;
+        background-color: #111111;
+        border-top: 1px solid #333;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        
+        /* แก้ไขบรรทัดนี้: เพิ่ม padding ด้านล่างให้เยอะขึ้น */
+        padding: 35px 25px calc(50px + env(safe-area-inset-bottom)); 
+        
+        z-index: 100;
+        transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9);
+    }
+    
 
     /* ปรับแต่งโครงสร้าง Pop-up ให้รองรับ Safari */
     .info-section {
