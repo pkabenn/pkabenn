@@ -373,81 +373,106 @@ body::before {
 .btn-close-popup { display: none; }
 
 /* =========================================
-   📱 โหมดแท็บเล็ตและมือถือ (iPad / Mobile)
+   📱 โหมดแท็บเล็ตและมือถือ (iPad / Safari Fix) - หน้า Learn
    ========================================= */
 @media (max-width: 1024px) {
-    .split-container {
+    /* 🔴 ล็อกขนาดหน้าจอหน้า Learn ไม่ให้ยืดตามกฎของ Safari */
+    body, html {
+        height: 100dvh !important;
+        overflow: hidden !important;
+    }
+    
+    .hero {
+        height: 100dvh !important;
+        overflow: hidden !important;
+        padding: 0 !important; /* เคลียร์ช่องว่างขอบจอ */
+    }
+
+    /* จัดการกรอบ wrapper หลัก */
+    .container.map-wrapper {
+        height: 100dvh !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 15px 0 0 0 !important;
+        display: flex;
         flex-direction: column;
-        height: 100dvh;
+    }
+
+    .top-row {
+        padding: 0 20px !important;
+        margin-bottom: 10px !important;
+        flex-shrink: 0; /* ล็อกไว้ไม่ให้โดนบีบส่วนหัว */
+    }
+    
+    .title-text h1 {
+        font-size: 28px !important;
+    }
+
+    /* ล็อกกล่องแบ่งหน้าจอให้พอดีเป๊ะ แล้วแบ่งพื้นที่ด้านใน */
+    .split-container {
+        flex: 1;
+        height: calc(100dvh - 80px) !important; /* หักลบความสูงของแถวหัวข้อออก */
+        flex-direction: column;
         overflow: hidden;
+        margin: 0 !important;
     }
     
     .map-section {
         width: 100%;
-        height: 100dvh; /* แผนที่แสดงเต็มจอ */
-        border: none;
+        height: 100% !important; /* ขยายแผนที่เต็มพื้นที่ที่เหลือ */
         position: relative;
     }
 
-    /* 📍 ตกแต่งปุ่ม Select ให้ลอยอยู่ด้านล่างกึ่งกลางของแผนที่ */
+    /* จัดตำแหน่งปุ่มดูข้อมูลด่านสีเขียวให้อยู่เหนือขอบล่างพอดี */
     .btn-select-node {
         display: block;
         position: fixed;
-        bottom: 40px;
+        bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 90;
         background-color: #4ade80;
         color: #0b0b0b;
         border: none;
-        padding: 15px 30px;
-        font-size: 16px;
+        padding: 14px 28px;
+        font-size: 15px;
         font-weight: bold;
         border-radius: 50px;
-        cursor: pointer;
         box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
-        transition: all 0.2s ease;
-    }
-    .btn-select-node:active {
-        transform: translateX(-50%) scale(0.95);
     }
 
-    /* ซ่อน Pop-up ข้อมูลไว้ใต้หน้าจอก่อน */
+    /* ปรับแต่งโครงสร้าง Pop-up ให้รองรับ Safari */
     .info-section {
         position: fixed;
         bottom: -100%; 
         left: 0;
         width: 100%;
         height: auto;
+        max-height: 75dvh; /* ป้องกันไม่ให้ป๊อปอัพยาวเกินหน้าจอ */
+        overflow-y: auto; /* หากเนื้อหาในป๊อปอัพยาว ให้เลื่อนในป๊อปอัพแทน */
+        -webkit-overflow-scrolling: touch;
         background-color: #111111;
         border-top: 1px solid #333;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        padding: 40px 30px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        padding: 35px 25px;
         z-index: 100;
         transition: bottom 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
     }
 
-    /* คลาสนี้ถูกสั่งงานโดย JS เมื่อกดปุ่ม Select เพื่อดันป๊อปอัพขึ้นมา */
     .info-section.show-popup {
         bottom: 0;
     }
 
-    /* ตกแต่งปุ่มกากบาทปิดป๊อปอัพ */
     .btn-close-popup {
         display: block;
         position: absolute;
-        top: 15px;
-        right: 25px;
+        top: 12px;
+        right: 20px;
         background: none;
         border: none;
         color: #666;
-        font-size: 36px;
-        cursor: pointer;
+        font-size: 32px;
     }
 }

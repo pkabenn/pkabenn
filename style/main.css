@@ -236,45 +236,46 @@ h1 {
 }
 
 /* =========================================
-   📱 โหมดแท็บเล็ตและมือถือ (iPad) - หน้า Menu
+   📱 โหมดแท็บเล็ตและมือถือ (iPad / Safari Fix) - หน้า Menu
    ========================================= */
 @media (max-width: 1024px) {
-    /* 1. ปลดล็อกหน้าจอให้สามารถใช้นิ้วปัดเลื่อนขึ้นลงได้ */
+    /* 🔴 บังคับล็อกหน้าจอตัวหน้าย่อยห้ามโตเด็ดขาด เพื่อป้องกัน Safari ขยายร่าง iframe */
     body, html {
-        overflow-y: auto !important; 
-        height: auto !important;
-        min-height: 100dvh;
+        height: 100dvh !important;
+        overflow: hidden !important;
     }
 
-    /* 2. จัดพื้นที่กล่องหลักให้ยืดหยุ่นตามเนื้อหา */
+    /* green ย้ายหน้าที่การสไลด์เลื่อนหน้าจอ (Scroll) มาไว้ที่กล่องเนื้อหาภายในแทน */
     .hero {
-        height: auto;
-        min-height: 100dvh;
+        height: 100dvh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch; /* สั่งให้ใช้นิ้วปัดเลื่อนได้ลื่นๆ บน iOS */
         padding: 40px 20px; 
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start; /* เรียงจากบนลงล่าง */
+        align-items: center;
     }
 
-    /* 3. ลดขนาดหัวข้อและข้อความไม่ให้กินที่เยอะเกินไป */
+    /* กระชับขนาดตัวอักษรและช่องว่างให้พอดีกับหน้าจอ iPad */
     h1 {
-        font-size: 46px !important; 
-        margin: 0 0 15px 0 !important;
+        font-size: 40px !important; 
+        margin: 10px 0 15px 0 !important;
     }
     p {
-        font-size: 15px;
-        margin-bottom: 30px !important;
+        font-size: 14px;
+        margin-bottom: 25px !important;
     }
 
-    /* 4. บีบการ์ดเมนูให้กะทัดรัดขึ้น */
     .mode-cards {
         flex-direction: column;
         align-items: center;
-        gap: 20px; /* ลดช่องว่างระหว่างการ์ด */
+        gap: 15px;
+        width: 100%;
     }
     .mode-card {
         width: 100%;
-        max-width: 320px; 
-        padding: 25px 20px; /* ลดความสูงของการ์ดลง */
+        max-width: 300px; 
+        padding: 20px 15px;
     }
 }
