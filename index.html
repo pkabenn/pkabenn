@@ -3,60 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trig - The Journey</title>
+    <title>pkaben</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ล็อกพื้นหลังและลบขอบทั้งหมดทิ้ง */
         html, body {
             margin: 0;
             padding: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             background-color: #0b0b0b;
             overflow: hidden;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* ตั้งค่ากรอบ iframe ให้เต็มจอซ้อนทับกัน และมีเอฟเฟกต์เฟดตอนเปลี่ยนหน้า */
         iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             border: none;
-            transition: opacity 0.3s ease-out; /* ความนุ่มนวลตอนสลับหน้า */
+            transition: opacity 0.3s ease-out;
         }
 
-        /* คลาสสำหรับซ่อนหน้า */
         .page-hidden {
             opacity: 0;
-            pointer-events: none; /* กดปุ่มไม่ได้ตอนซ่อนอยู่ */
+            pointer-events: none;
             z-index: 1;
         }
 
-        /* คลาสสำหรับโชว์หน้าปัจจุบัน */
         .page-active {
             opacity: 1;
             pointer-events: auto;
             z-index: 10;
         }
+
+        /* ระบบหน้าจอโหลด (แสดงเฉพาะตอนเข้า/ออก Stage เท่านั้น) */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100dvh;
+            background-color: #0b0b0b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .loader-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.03);
+            border-top-color: #4ade80;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .loading-text {
+            color: #666;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-    <iframe id="frame-start" class="page-active" src="start.html"></iframe>
+    <div id="main-loader" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading Stage Assets</div>
+    </div>
+
     <iframe id="frame-menu" class="page-hidden" src="menu.html"></iframe>
     <iframe id="frame-learn" class="page-hidden" src="learn.html"></iframe>
+    <iframe id="frame-lesson" class="page-hidden" src="lesson.html"></iframe>
+    <iframe id="frame-stage" class="page-hidden" src="about:blank"></iframe>
+    <iframe id="frame-start" class="page-active" src="start.html"></iframe>
 
     <script>
-        // ฟังก์ชันสั่งสลับหน้าเว็บ (จะถูกเรียกใช้จากหน้าย่อยข้างใน)
+        // ==========================================
+        // 🔒 🌟 1. ระบบปิดปุ่มย้อนกลับของ BROWSER ทั้งโปรเจกต์ (ตั้งแต่เริ่มเข้าเว็บ)
+        // ==========================================
+        (function () {
+            // ดันสถานะหน้าแรกเข้าไปใน History Stack ทันทีที่เปิดเว็บสำเร็จ
+            window.history.pushState(null, document.title, window.location.href);
+            
+            // ดักจับทุกครั้งที่มีการกดปุ่มย้อนกลับบนตัวเบราว์เซอร์
+            window.addEventListener('popstate', function (event) {
+                // บังคับดันประวัติหน้าเดิมทับลงไปใหม่ ทำให้เบราว์เซอร์นิ่งสนิท ขยับหนีไปไหนไม่ได้
+                window.history.pushState(null, document.title, window.location.href);
+            });
+        })();
+
+        // ==========================================
+        // ⚙️ 2. ระบบควบคุมการสลับหน้าจอ (UI SWITCH)
+        // ==========================================
+        let currentPage = 'start'; 
+
         function switchPage(pageName) {
-            // 1. ซ่อนทุกหน้าก่อน
+            const loader = document.getElementById('main-loader');
+            const targetFrameId = 'frame-' + pageName;
+            const targetFrame = document.getElementById(targetFrameId);
+
+            if (!targetFrame) return;
+
+            // เช็กเงื่อนไข: หากทำงานเกี่ยวข้องกับหน้า stage (เข้าด่านเล่น หรือ ออกจากด่านเล่น)
+            const involvesStage = (currentPage === 'stage' || pageName === 'stage');
+
+            if (involvesStage) {
+                loader.classList.add('loader-active'); // เปิดหน้าจอโหลด
+
+                setTimeout(() => {
+                    executePageSwitch(pageName);
+
+                    let hasLoaded = false;
+                    const hideLoader = () => {
+                        if (hasLoaded) return;
+                        hasLoaded = true;
+                        setTimeout(() => {
+                            loader.classList.remove('loader-active');
+                        }, 400); 
+                    };
+
+                    targetFrame.onload = hideLoader;
+                    setTimeout(hideLoader, 1000); // ระบบเซฟตี้กันค้าง
+
+                }, 200);
+            } else {
+                // เปลี่ยนหน้าปกติทันทีไม่มีหน้าจอโหลดคั่น
+                executePageSwitch(pageName);
+            }
+        }
+
+        function executePageSwitch(pageName) {
             document.getElementById('frame-start').className = 'page-hidden';
             document.getElementById('frame-menu').className = 'page-hidden';
             document.getElementById('frame-learn').className = 'page-hidden';
-            
-            // 2. โชว์หน้าที่ต้องการ
+            document.getElementById('frame-lesson').className = 'page-hidden';
+            document.getElementById('frame-stage').className = 'page-hidden';
+
             document.getElementById('frame-' + pageName).className = 'page-active';
+            currentPage = pageName;
         }
     </script>
 </body>

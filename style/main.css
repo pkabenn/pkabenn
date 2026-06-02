@@ -2,19 +2,10 @@
    1. THE SETUP & GLOBALS
    ========================================= */
 html {
-    background-color: #0b0b0b; /* ล็อกสีพื้นหลังสุดให้เป็นสีดำกลมกลืนกับตัวเว็บ */
-}
-/* ใส่ไว้ส่วนบนๆ ของไฟล์ CSS */
-body {
-    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
-    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
+    background-color: #0b0b0b; 
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-   * { 
+* { 
     box-sizing: border-box; 
 }
 
@@ -23,12 +14,20 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #0b0b0b;
     color: #eee;
-    overflow: hidden; 
+    overflow: hidden; /* 🌟 บังคับล็อกห้ามมี Scrollbar ทุกชนิดบนหน้าจอคอม */
     height: 100dvh; 
     display: flex;
     flex-direction: column;
-    -webkit-user-select: none; /* สำหรับ Safari */
-    user-select: none;         /* สำหรับ Chrome, Firefox และเบราว์เซอร์ทั่วไป */
+    -webkit-user-select: none;
+    user-select: none;
+    
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 body::before {
@@ -92,7 +91,7 @@ button { font-family: 'Inter', sans-serif; }
     font-family: serif;
     font-weight: bold;
     font-size: 22px;
-    font-style: italic;
+    /* font-style: italic; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,15 +111,16 @@ button { font-family: 'Inter', sans-serif; }
    4. HERO SECTION & TYPOGRAPHY
    ========================================= */
 .hero {
-        height: 100dvh !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch;
-        padding: 40px 20px calc(80px + env(safe-area-inset-bottom)) 20px; 
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    padding: 0;
+    overflow: hidden; /* 🌟 ป้องกันองค์ประกอบภายในดันจนเกิด Scrollbar */
+}
 .hero .container { 
     flex-direction: column; 
     align-items: center; 
@@ -165,116 +165,113 @@ h1 {
     line-height: 1.6;
 }
 
+.description-text {
+    color: #888888;
+    font-size: 16px;       
+    max-width: 720px;      
+    margin: 0 auto 40px auto; 
+    line-height: 1.6;
+    font-weight: 400;
+}
+
 /* =========================================
-   5. MODE CARDS (ดีไซน์การ์ดแบบใหม่)
+   5. MODE CARDS (จัดระดับการ์ดให้สมดุล)
    ========================================= */
 .mode-cards {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch; /* บังคับให้การ์ดสูงเท่ากันเสมอ */
     gap: 30px;
     width: 100%;
+    max-width: 750px; 
 }
 
 .mode-card {
-    background-color: rgba(26, 26, 26, 0.4);
-    border: 1px solid #333;
-    border-radius: 24px;
-    padding: 40px 30px;
-    width: 280px;
+    flex: 1; 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start; /* จัดเรียงของจากบนลงล่าง */
+    padding: 40px 30px;
+    
+    background-color: #111111;
+    border: 1px solid #333333;
+    border-radius: 24px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    color: #eee;
-    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
 .mode-card .card-icon {
     font-size: 48px;
     margin-bottom: 20px;
+    line-height: 1;
     transition: transform 0.3s ease;
 }
 
 .mode-card h3 {
     font-size: 20px;
     font-weight: 600;
-    margin: 0 0 10px 0;
+    color: #ffffff;
+    margin: 0 0 15px 0;
 }
 
 .mode-card .card-desc {
     font-size: 14px;
     color: #888;
-    line-height: 1.4;
+    line-height: 1.6;
+    flex-grow: 1; /* 🌟 สำคัญมาก: ช่วยดึงพื้นที่ว่าง ทำให้ข้อความและไอคอนไม่เบี้ยว */
 }
 
-/* 🌟 เอฟเฟกต์ตอนเอาเมาส์ชี้ (Hover) */
 .mode-card:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: #fff; /* ขอบสว่างขึ้นเป็นสีขาว */
-    transform: translateY(-8px); /* การ์ดลอยขึ้น */
-    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.05);
+    background-color: #1a1a1a;
+    transform: translateY(-5px);
+    border-color: #38bdf8; 
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
 }
 
 .mode-card:hover .card-icon {
-    transform: scale(1.15) rotate(5deg); /* ไอคอนขยับนิดๆ ให้ดูมีชีวิต */
+    transform: scale(1.15) rotate(5deg); 
 }
 
 /* =========================================
-   6. RESPONSIVE DESIGN
-   ========================================= */
-@media (max-width: 768px) {
-    header .container { padding: 0 20px; justify-content: center; }
-    h1 { font-size: 48px; }
-    .mode-cards {
-        flex-direction: column;
-        gap: 20px;
-    }
-    .mode-card { width: 100%; max-width: 320px; padding: 30px 20px; }
-}
-
-/* =========================================
-   📱 โหมดแท็บเล็ตและมือถือ (iPad / Safari Fix) - หน้า Menu
+   6. RESPONSIVE DESIGN (สำหรับมือถือและแท็บเล็ต)
    ========================================= */
 @media (max-width: 1024px) {
-    /* 🔴 บังคับล็อกหน้าจอตัวหน้าย่อยห้ามโตเด็ดขาด เพื่อป้องกัน Safari ขยายร่าง iframe */
     body, html {
         height: 100dvh !important;
         overflow: hidden !important;
     }
 
-    /* green ย้ายหน้าที่การสไลด์เลื่อนหน้าจอ (Scroll) มาไว้ที่กล่องเนื้อหาภายในแทน */
     .hero {
         height: 100dvh !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch; /* สั่งให้ใช้นิ้วปัดเลื่อนได้ลื่นๆ บน iOS */
+        overflow-y: auto !important; 
+        -webkit-overflow-scrolling: touch;
         padding: 40px 20px; 
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start; /* เรียงจากบนลงล่าง */
-        align-items: center;
+        justify-content: flex-start;
     }
-
-    /* กระชับขนาดตัวอักษรและช่องว่างให้พอดีกับหน้าจอ iPad */
-    h1 {
-        font-size: 40px !important; 
-        margin: 10px 0 15px 0 !important;
-    }
-    p {
+    
+    .description-text {
         font-size: 14px;
-        margin-bottom: 25px !important;
+        padding: 0 10px;
+        margin-bottom: 30px;
     }
+}
 
+@media (max-width: 768px) {
+    header .container { padding: 0 20px; justify-content: center; }
+    h1 { font-size: 48px; }
+    
     .mode-cards {
         flex-direction: column;
         align-items: center;
-        gap: 15px;
-        width: 100%;
+        gap: 20px;
     }
-    .mode-card {
-        width: 100%;
-        max-width: 300px; 
-        padding: 20px 15px;
+    
+    .mode-card { 
+        width: 100%; 
+        max-width: 350px; 
+        padding: 30px 20px; 
+        flex: none; /* ปิดการยืดบนมือถือ */
     }
 }

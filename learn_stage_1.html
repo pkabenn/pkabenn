@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 1 - พื้นฐานมุม</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0b0b; 
+            color: #eee;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-back {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-back:hover {
+            background: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-back" onclick="goBackToMap()">← กลับไปหน้าแผนที่</button>
+
+    <h1>ยินดีต้อนรับสู่ บทที่ 1</h1>
+    <p>ที่นี่คือพื้นที่สำหรับใส่เนื้อหา วิดีโอ หรือข้อสอบของบทที่ 1 ครับ</p>
+
+    <script>
+        function goBackToMap() {
+            try {
+            // เช็กว่ามีหน้าต่างหลักครอบอยู่ไหม แล้วสั่งสลับกลับไปหน้าแผนที่ ('learn') ตรงๆ
+                if (window.parent && typeof window.parent.switchPage === 'function') {
+                    window.parent.switchPage('learn');
+                } else {
+                // แผนสำรองหากเปิดทดสอบไฟล์แยกเดี่ยว
+                    window.location.href = 'learn.html';
+                }
+            } catch (e) {
+                console.error("เกิดข้อผิดพลาดในการกดย้อนกลับ:", e);
+            }
+        }
+    </script>
+</body>
+</html>

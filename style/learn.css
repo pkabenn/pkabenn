@@ -142,39 +142,55 @@ body::before {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    min-height: 0;                 /* 🔴 ล็อกความสูงฝั่งซ้าย */
+    min-height: 0;
+    position: relative;      
 }
 
-/* ปุ่มลูกศรควบคุมการเลื่อน */
 .scroll-controls {
+    position: absolute;
+    top: 50%; /* จัดให้อยู่กึ่งกลางแนวตั้งของช่องเลือกด่าน */
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    justify-content: flex-end; 
-    flex-shrink: 0;                /* ห้ามปุ่มลูกศรโดนบีบแบน */
+    justify-content: space-between; /* แยกปุ่มซ้าย-ขวา ไปไว้ที่ขอบสองฝั่ง */
+    padding: 0 20px; /* เว้นระยะห่างจากขอบกล่องเข้ามานิดนึง */
+    z-index: 30; /* ดันให้อยู่เลเยอร์บนสุด เหนือเส้น SVG และวงกลมด่าน */
+    pointer-events: none; /* 🌟 สำคัญมาก: ป้องกันไม่ให้กล่องเปล่าๆ ไปบังการจิ้มเลือกด่าน */
 }
 
+/* 3. ปรับแต่งปุ่มลูกศรให้เป็นวงกลมลอยแบบพรีเมียม */
 .btn-scroll {
-    background-color: #1a1a1a;
-    color: #fff;
-    border: 1px solid #333;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    pointer-events: auto; /* เปิดให้ตัวปุ่มสามารถกดคลิกได้ปกติ */
+    width: 46px;
+    height: 46px;
+    background-color: rgba(11, 11, 11, 0.8); /* สีดำโปร่งแสง เนียนไปกับพื้นหลัง */
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    border-radius: 50%; /* เปลี่ยนปุ่มเป็นวงกลมโมเดิร์น */
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
-    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* ใส่เงาให้ปุ่มดูลอยขึ้นมาจากแผนที่ */
 }
 
+/* เอฟเฟกต์ตอนเอาเมาส์ไปชี้ปุ่ม */
 .btn-scroll:hover {
     background-color: #ffffff;
     color: #0b0b0b;
     border-color: #ffffff;
+    transform: scale(1.1); /* ขยายใหญ่ขึ้นเล็กน้อยตอนชี้ */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
+/* เอฟเฟกต์ตอนกดคลิกปุ่ม */
+.btn-scroll:active {
+    transform: scale(0.95);
+}
 /* กรอบเลื่อนหน้าต่างแผนที่ */
 .map-scroll-window {
     width: 100%;

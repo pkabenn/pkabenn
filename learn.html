@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
     <main class="hero">
         <div class="container map-wrapper">
             
@@ -30,9 +29,9 @@
                         <button class="btn-scroll" onclick="scrollMap(300)" title="เลื่อนขวา">→</button>
                     </div>
 
-    <button id="btnSelectNode" class="btn-select-node" onclick="openPopup()">ดูข้อมูลด่าน</button>
+                    <button id="btnSelectNode" class="btn-select-node" onclick="openPopup()">ดูข้อมูลด่าน</button>
 
-    <div class="map-scroll-window" id="mapScrollWindow">
+                    <div class="map-scroll-window" id="mapScrollWindow">
                         <div class="map-area">
                             <svg class="map-path" viewBox="0 0 2000 500" preserveAspectRatio="none">
                                 <path d="M 100 400 C 300 400, 300 250, 500 250 C 600 250, 600 400, 700 400 C 800 400, 800 150, 900 150 C 1100 150, 1100 350, 1300 350 C 1500 350, 1500 200, 1700 200 C 1800 200, 1850 300, 1900 300" 
@@ -40,7 +39,7 @@
                             </svg>
 
                             <button class="map-node unlocked" style="left: 5%; top: 80%;" data-title="บทที่ 1" onclick="selectLesson(1)">1</button>
-                            <button class="map-node unlocked" style="left: 25%; top: 50%;" data-title="บทที่ 2" onclick="selectLesson(2)">2</button>
+                            <button class="map-node locked" style="left: 25%; top: 50%;" data-title="บทที่ 2" onclick="selectLesson(2)">2</button>
                             <button class="map-node locked" style="left: 35%; top: 80%;" data-title="บทที่ 3" onclick="selectLesson(3)">3</button>
                             <button class="map-node locked" style="left: 45%; top: 30%;" data-title="บทที่ 4" onclick="selectLesson(4)">4</button>
                             <button class="map-node locked" style="left: 65%; top: 70%;" data-title="บทที่ 5" onclick="selectLesson(5)">5</button>

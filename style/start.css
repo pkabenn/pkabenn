@@ -2,23 +2,11 @@
    1. THE SETUP & GLOBALS
    ========================================= */
 
-   html {
+html {
     background-color: #0b0b0b; /* ล็อกสีพื้นหลังสุดให้เป็นสีดำกลมกลืนกับตัวเว็บ */
 }
+
 /* ใส่ไว้ส่วนบนๆ ของไฟล์ CSS */
-body {
-    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
-    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-* { 
-    box-sizing: border-box; 
-}
-
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
@@ -30,6 +18,18 @@ body {
     flex-direction: column;
     -webkit-user-select: none; /* สำหรับ Safari */
     user-select: none;         /* สำหรับ Chrome, Firefox และเบราว์เซอร์ทั่วไป */
+    
+    opacity: 0; /* สั่งให้ซ่อนไว้ก่อนตั้งแต่ยังไม่เริ่มวาดหน้า */
+    animation: fadeIn 0.4s ease-out forwards; /* เรียกใช้แอนิเมชันให้สว่างขึ้น */
+}
+
+* { 
+    box-sizing: border-box; 
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ลายตารางพื้นหลังแบบจางๆ */
@@ -60,8 +60,6 @@ body::before {
     padding: 0;
 }
 
-/* 🛑 ลบ .hero::before (แสงสีฟ้า) ออกเพื่อให้เป็นโทนขาวดำมินิมอลเข้าคู่กับหน้า main */
-
 /* 🌟 อนิเมชันค่อยๆ ลอยขึ้นมาตอนเปิดเว็บ */
 .container { 
     flex-direction: column; 
@@ -69,11 +67,12 @@ body::before {
     display: flex;
     animation: fadeUp 1s ease-out forwards;
     width: 100%;
+    transform: translateY(-20px); /* 🌟 ดึงกลุ่มเนื้อหาทั้งหมดขึ้นด้านบนเล็กน้อย */
 }
 
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(-20px); } /* แมตช์กับตัวด้านบน */
 }
 
 /* =========================================
@@ -82,26 +81,47 @@ body::before {
 .beta-notice {
     font-size: 12px;
     font-weight: 600;
-    color: #888; /* ปรับเป็นสีเทาเพื่อความมินิมอลตามธีมหลัก */
+    color: #888; 
     background-color: #1a1a1a;
     border: 1px solid #2a2a2a;
     padding: 8px 18px;
     border-radius: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 24px; /* 🌟 ขยับหัวข้อหลักขึ้นมาใกล้ขึ้นเล็กน้อย */
     letter-spacing: 1.5px;
 }
 
-h1 {
-    font-size: 84px;
-    font-weight: 700;
+/* การตกแต่งหัวข้อหลัก */
+.main-title {
+    font-size: 72px; 
+    font-weight: 800;
     line-height: 1.1;
-    margin: 0 0 50px 0;
+    margin: 0 0 20px 0;
     letter-spacing: -2px;
-    /* 🌟 ไล่สีตัวหนังสือแบบพรีเมียมจากขาวไปเทาเงิน */
-    background: linear-gradient(135deg, #ffffff 30%, #71717a 100%);
+    /* ไล่สีตัวหนังสือหลักจากขาวไปเทา */
+    background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* เล่นสีคำว่า & Conic Sections ให้โดดเด่น */
+.main-title .highlight {
+    font-size: 80px; 
+    /* background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* text-shadow: 0 0 30px rgba(56, 189, 248, 0.3); */
+}
+
+/* คำอธิบายสั้นๆ ก่อนเข้าเกม */
+.description {
+    color: #888888;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto 75px auto; /* 🌟 เพิ่มจาก 50px เป็น 75px เพื่อผลักปุ่ม START ให้ห่างลงไปอีก */
+    line-height: 1.6;
+    font-weight: 400;
 }
 
 /* =========================================
@@ -109,7 +129,7 @@ h1 {
    ========================================= */
 .cta-buttons { 
     display: flex; 
-    justify-content: center; /* 🔴 จัดให้อยู่กึ่งกลางแนวนอนอย่างสมบูรณ์ */
+    justify-content: center; 
     align-items: center; 
     width: 100%;
 }
@@ -139,6 +159,13 @@ h1 {
    5. RESPONSIVE DESIGN (สำหรับมือถือ)
    ========================================= */
 @media (max-width: 768px) {
-    h1 { font-size: 48px; }
+    .container { transform: translateY(-10px); }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(-10px); }
+    }
+    .main-title { font-size: 48px; }
+    .main-title .highlight { font-size: 52px; }
+    .description { font-size: 15px; padding: 0 20px; margin-bottom: 55px; } /* 🌟 ปรับระยะห่างบนมือถือให้สมดุลขึ้น */
     .btn-primary { padding: 15px 40px; font-size: 14px; }
 }
